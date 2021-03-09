@@ -8,8 +8,40 @@ using Catch::Matchers::Equals;
 
 // Fix the following class
 class Complex {
-    void operator>>(std::string&) const;
-    void operator<<(const std::string&);
+private:
+  int iReal, iImagin;
+
+public:
+  Complex(int iReal = 0, int iImagin = 0) {
+    this->iReal = iReal;
+    this->iImagin = iImagin;
+  };
+  int re() { return iReal; }
+  int im() { return iImagin; }
+  void operator>>(std::string &s) const {
+    s.append(std::to_string(iReal));
+    if (iImagin >= 0) {
+      s.append("+");
+    }
+    s.append(std::to_string(iImagin));
+    s.append("i");
+  }
+  void operator<<(const std::string &s) {
+    if (s[0] == '-') {
+      int i = s[1] - '0';
+      iReal = -1 * i;
+    } else {
+      iReal = s[0] - '0';
+    }
+    int api = s.find("i");
+    int bpi = api - 1;
+    int cpi = api - 2;
+    if (s[cpi] == '-') {
+      iImagin = -1 * (s[bpi] - '0');
+    } else {
+      iImagin = s[bpi] - '0';
+    }
+  }
 };
 
 //------------------------------
